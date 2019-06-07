@@ -1,0 +1,6 @@
+framework module Pods_Mitake_Assignment {
+  umbrella header "Pods-Mitake Assignment-umbrella.h"
+
+  export *
+  module * { export * }
+}

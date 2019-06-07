@@ -12,6 +12,10 @@
 		3E4B71D522A90AFC00172535 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D322A90AFC00172535 /* Main.storyboard */; };
 		3E4B71D722A90AFD00172535 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D622A90AFD00172535 /* Assets.xcassets */; };
 		3E4B71DA22A90AFD00172535 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D822A90AFD00172535 /* LaunchScreen.storyboard */; };
+		3ED7FEC622AA0EC000A2C190 /* trend_2201.json in Resources */ = {isa = PBXBuildFile; fileRef = 3ED7FEC522AA0EBF00A2C190 /* trend_2201.json */; };
+		3ED7FEC822AA103700A2C190 /* TrendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7FEC722AA103700A2C190 /* TrendModel.swift */; };
+		3ED7FECA22AA10DF00A2C190 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7FEC922AA10DF00A2C190 /* DataManager.swift */; };
+		548AE40FF0BCA1F43063326B /* Pods_Mitake_Assignment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B229346DDC814AAC2B2BFCDB /* Pods_Mitake_Assignment.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,12 @@
 		3E4B71D622A90AFD00172535 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E4B71D922A90AFD00172535 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E4B71DB22A90AFD00172535 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3ED7FEC522AA0EBF00A2C190 /* trend_2201.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = trend_2201.json; sourceTree = "<group>"; };
+		3ED7FEC722AA103700A2C190 /* TrendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendModel.swift; sourceTree = "<group>"; };
+		3ED7FEC922AA10DF00A2C190 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		B229346DDC814AAC2B2BFCDB /* Pods_Mitake_Assignment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mitake_Assignment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB6D8EA332751D7C1BA4F2FF /* Pods-Mitake Assignment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mitake Assignment.release.xcconfig"; path = "Target Support Files/Pods-Mitake Assignment/Pods-Mitake Assignment.release.xcconfig"; sourceTree = "<group>"; };
+		E6DDB7540CB98786205A6481 /* Pods-Mitake Assignment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mitake Assignment.debug.xcconfig"; path = "Target Support Files/Pods-Mitake Assignment/Pods-Mitake Assignment.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +39,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				548AE40FF0BCA1F43063326B /* Pods_Mitake_Assignment.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3610BAC6E2B3A040379C0B8E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B229346DDC814AAC2B2BFCDB /* Pods_Mitake_Assignment.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3E4B71C322A90AFC00172535 = {
 			isa = PBXGroup;
 			children = (
 				3E4B71CE22A90AFC00172535 /* Mitake Assignment */,
 				3E4B71CD22A90AFC00172535 /* Products */,
+				E222CE8F14AC4F98D9D70757 /* Pods */,
+				3610BAC6E2B3A040379C0B8E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,11 +78,23 @@
 				3E4B71CF22A90AFC00172535 /* AppDelegate.swift */,
 				3E4B71D122A90AFC00172535 /* ViewController.swift */,
 				3E4B71D322A90AFC00172535 /* Main.storyboard */,
+				3ED7FEC522AA0EBF00A2C190 /* trend_2201.json */,
 				3E4B71D622A90AFD00172535 /* Assets.xcassets */,
 				3E4B71D822A90AFD00172535 /* LaunchScreen.storyboard */,
 				3E4B71DB22A90AFD00172535 /* Info.plist */,
+				3ED7FEC722AA103700A2C190 /* TrendModel.swift */,
+				3ED7FEC922AA10DF00A2C190 /* DataManager.swift */,
 			);
 			path = "Mitake Assignment";
+			sourceTree = "<group>";
+		};
+		E222CE8F14AC4F98D9D70757 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E6DDB7540CB98786205A6481 /* Pods-Mitake Assignment.debug.xcconfig */,
+				BB6D8EA332751D7C1BA4F2FF /* Pods-Mitake Assignment.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,6 +104,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3E4B71DE22A90AFD00172535 /* Build configuration list for PBXNativeTarget "Mitake Assignment" */;
 			buildPhases = (
+				ABCED03B70EA036A0012CE57 /* [CP] Check Pods Manifest.lock */,
 				3E4B71C822A90AFC00172535 /* Sources */,
 				3E4B71C922A90AFC00172535 /* Frameworks */,
 				3E4B71CA22A90AFC00172535 /* Resources */,
@@ -122,6 +156,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED7FEC622AA0EC000A2C190 /* trend_2201.json in Resources */,
 				3E4B71DA22A90AFD00172535 /* LaunchScreen.storyboard in Resources */,
 				3E4B71D722A90AFD00172535 /* Assets.xcassets in Resources */,
 				3E4B71D522A90AFC00172535 /* Main.storyboard in Resources */,
@@ -130,11 +165,38 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		ABCED03B70EA036A0012CE57 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mitake Assignment-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3E4B71C822A90AFC00172535 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED7FEC822AA103700A2C190 /* TrendModel.swift in Sources */,
+				3ED7FECA22AA10DF00A2C190 /* DataManager.swift in Sources */,
 				3E4B71D222A90AFC00172535 /* ViewController.swift in Sources */,
 				3E4B71D022A90AFC00172535 /* AppDelegate.swift in Sources */,
 			);
@@ -280,6 +342,7 @@
 		};
 		3E4B71DF22A90AFD00172535 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6DDB7540CB98786205A6481 /* Pods-Mitake Assignment.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -297,6 +360,7 @@
 		};
 		3E4B71E022A90AFD00172535 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB6D8EA332751D7C1BA4F2FF /* Pods-Mitake Assignment.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
