@@ -12,8 +12,6 @@ class DataManager {
     
     let decoder = JSONDecoder()
     
-   
-    
     func readJson(complitionHandler: (Trend)-> Void) {
         
         do {
@@ -29,4 +27,6 @@ class DataManager {
             print(error.localizedDescription)
         }
     }
+    
 }
+

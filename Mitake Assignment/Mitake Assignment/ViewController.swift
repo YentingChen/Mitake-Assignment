@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     var xPosition:CGFloat = 0
     lazy var yPosition:CGFloat = self.view.frame.maxY
+    var currentColor = UIColor.red
     
     let dataManager = DataManager()
     var trend: Trend?
@@ -20,25 +21,23 @@ class ViewController: UIViewController {
     var topPoint: Double?
     var bottomPoint: Double?
     
-    let linePath = UIBezierPath()
-    let lineShapeLayer = CAShapeLayer()
+    //let linePath = UIBezierPath()
+    //let lineShapeLayer = CAShapeLayer()
     
-    var chartScrollView:UIScrollView!
-    var chartView:UIView!
+    var chartScrollView = UIScrollView()
+    var chartView = UIView()
+    
+    var bigArray = [[Tick]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         getTrendData()
         
-        // Create chart scroll view & chart view
-        chartView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height/3))
-        chartView.backgroundColor = UIColor.clear
+        makeArray()
         
-        chartScrollView = UIScrollView(frame: CGRect(x: 0, y: self.view.frame.height/4, width: self.view.frame.width, height: self.view.frame.height/3))
-        chartScrollView.backgroundColor = UIColor.black
-        chartScrollView.contentSize = chartView.frame.size
-        chartScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        chartScrollViewSetUp()
+        chartViewSetUp()
         
         chartScrollView.addSubview(chartView)
         view.addSubview(chartScrollView)
@@ -46,6 +45,64 @@ class ViewController: UIViewController {
         centerPointY = self.chartView.frame.height - (self.chartView.frame.height*(23.1-20.8)/(25.4-20.8))
         
     }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        //init point
+        xPosition = 40
+        //yPosition = self.chartView.frame.height/2-15
+        yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(bigArray[0][0].c)!-20.8)/(25.4-20.8)))
+        
+        for ary in bigArray{
+            
+            let origin = CGPoint(x: xPosition, y: yPosition)
+            var linePath = UIBezierPath()
+            let lineShapeLayer = CAShapeLayer()
+            
+            linePath.move(to: origin)
+            
+            
+            for i in ary{
+                
+                if Double(i.c)! > Double(self.trend!.root.c)! {
+                    currentColor = UIColor.red
+                }
+                else if Double(i.c)! < Double(self.trend!.root.c)! {
+                    currentColor = UIColor.green
+                }
+                
+                xPosition = CGFloat(Double(i.t)!)+40
+                yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.c)!-20.8)/(25.4-20.8)))
+                updateChart(linePath, lineShapeLayer)
+                
+            }
+        }
+        
+//        for i in trend.root.tick {
+//            xPosition = CGFloat(Double(i.t)!)+40
+//
+//            yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.c)!-20.8)/(25.4-20.8)))
+//
+//            updateChart()
+//        }
+        
+        let viewHeight = Int(chartView.frame.height)
+        
+        drawYScaleLabel(x: 0, y: Double(self.chartView.frame.height/2) - 20, value: self.centerPoint!)
+        drawYScaleLabel(x: 0, y: 0, value: self.topPoint!)
+        drawYScaleLabel(x: 0, y: Double(self.chartView.frame.height) - 40, value: self.bottomPoint!)
+        
+        
+        //linePath.addLine(to: CGPoint(x: 311, y: self.chartView.frame.height/2-15))
+        //lineShapeLayer.path = linePath.cgPath
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
     
     fileprivate func getTrendData() {
         dataManager.readJson { (trend) in
@@ -56,55 +113,38 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        //markPoint()
+    fileprivate func chartViewSetUp() {
         
-        //init point
-        xPosition = 40
-        yPosition = self.chartView.frame.height/2-15
-        linePath.move(to: CGPoint(x: xPosition, y: yPosition))
-        
-        
-        for i in self.trend!.root.tick {
-            xPosition = CGFloat(Double(i.t)!)+40
-            print(self.chartView.frame.height)
-            yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.c)!-20.8)/(25.4-20.8)))
-            
-            print(xPosition, i.c)
-            updateChart()
-        }
-        
-        let viewHeight = Int(chartView.frame.height)
-        
-        drawYScaleLabel(x: 0, y: Double(self.chartView.frame.height/2) - 20, value: self.centerPoint!)
-        drawYScaleLabel(x: 0, y: 0, value: self.topPoint!)
-        drawYScaleLabel(x: 0, y: Double(self.chartView.frame.height) - 40, value: self.bottomPoint!)
-        
-        
-        linePath.addLine(to: CGPoint(x: 311, y: self.chartView.frame.height/2-15))
-        lineShapeLayer.path = linePath.cgPath
+        let chartViewWidth = self.view.frame.width
+        let chartViewHeight = chartScrollView.frame.height
+        chartView.frame = CGRect(x: 0, y: 0, width: chartViewWidth , height: chartViewHeight )
+        chartView.backgroundColor = UIColor.clear
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    fileprivate func chartScrollViewSetUp() {
+        
+        let scrollViewWidth = self.view.frame.width
+        let scrollViewHeight = self.view.frame.height/3
+        
+        chartScrollView.frame = CGRect(x: 0, y: self.view.frame.height/4, width: scrollViewWidth, height: scrollViewHeight)
+        chartScrollView.backgroundColor = UIColor.black
+        chartScrollView.contentSize = chartView.frame.size
+        chartScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
     
     // MARK: - LineChart functions
     
-    func updateChart() {
+    func updateChart(_ linePath: UIBezierPath, _ lineShapeLayer: CAShapeLayer) {
+        
         updateChartViewFrame()
         linePath.addLine(to: CGPoint(x: xPosition, y: yPosition))
         lineShapeLayer.path = linePath.cgPath
-        lineShapeLayer.fillColor = UIColor.clear.cgColor
-        if yPosition > centerPointY!{
-            lineShapeLayer.strokeColor = UIColor.red.cgColor
-        }else{
-            lineShapeLayer.strokeColor = UIColor.green.cgColor
-        }
+        //lineShapeLayer.fillColor = UIColor.clear.cgColor
+        lineShapeLayer.fillColor = currentColor.cgColor
+        lineShapeLayer.strokeColor = currentColor.cgColor
         lineShapeLayer.lineWidth = 1
-        print(linePath)
+        //print(linePath)
         chartView.layer.addSublayer(lineShapeLayer)
     }
     
@@ -147,6 +187,87 @@ class ViewController: UIViewController {
         yScaleLabel.textColor = UIColor.green
         yScaleLabel.backgroundColor = UIColor.red
         self.chartView.addSubview(yScaleLabel)
+    }
+    
+    func makeArray(){
+        
+        var basicValue = Double(self.trend!.root.c)
+        var isUp = false
+        var index = 0
+        for point in (self.trend?.root.tick)!{
+            
+            if point.t == "1"{
+                if Double(point.c)! >= basicValue!{
+                    isUp = true
+                }else{
+                    isUp = false
+                }
+                
+                var array = [Tick]()
+                let zeroPoint = Tick.init(t: "0", o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+                array.append(zeroPoint)
+                array.append(point)
+                bigArray.append(array)
+            }else{
+                if Double(point.c)! >= basicValue!{
+                    
+                    if isUp == false{
+                        let array = [Tick]()
+                        bigArray.append(array)
+                        index += 1
+                        
+                        //add bigAry[index-1]
+                        //add bigAry[index]
+                        let lastPoint = bigArray[index-1][bigArray[index-1].count-1]
+                        let t = (Double(lastPoint.t)! - Double(point.t)!) / (Double(point.c)! - Double(lastPoint.c)!)
+                            * (Double(lastPoint.c)! - basicValue!) + Double(lastPoint.t)!
+                        let zeroPoint = Tick.init(t: String(t), o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+                        bigArray[index-1].append(zeroPoint)
+                        bigArray[index].append(zeroPoint)
+                        
+                    }
+                    
+                    //add point
+                    //...
+                    bigArray[index].append(point)
+                    
+                    isUp = true;
+                }
+                else{
+                    
+                    if isUp == true{
+                        let array = [Tick]()
+                        bigArray.append(array)
+                        index += 1
+                        
+                        
+                        let lastPoint = bigArray[index-1][bigArray[index-1].count-1]
+                        let t = (Double(lastPoint.t)! - Double(point.t)!) / (Double(point.c)! - Double(lastPoint.c)!)
+                            * (Double(lastPoint.c)! - basicValue!) + Double(lastPoint.t)!
+                        let zeroPoint = Tick.init(t: String(t), o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+                        bigArray[index-1].append(zeroPoint)
+                        bigArray[index].append(zeroPoint)
+                    }
+                    
+                    //add point
+                    //...
+                    bigArray[index].append(point)
+                    
+                    isUp = false;
+                }
+            }
+        }
+        
+        
+        let zeroPoint = Tick.init(t: "\(self.trend!.root.tick.count)", o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+        bigArray[bigArray.count-1].append(zeroPoint)
+        
+        for ary in bigArray{
+            print("=============")
+            print(ary)
+        }
+        
+        
     }
     
     
