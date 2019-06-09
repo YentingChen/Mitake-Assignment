@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     let dataManager = DataManager()
-    var trend: Trend?
+    var trend: TrendDoubleType?
     
     var xPosition:CGFloat = 0
     var yPosition:CGFloat = 0
@@ -20,13 +20,13 @@ class ViewController: UIViewController {
     var centerPointY: CGFloat?
     var topPoint: Double?
     var bottomPoint: Double?
-    var maxPoint: Tick?
-    var minPoint: Tick?
+    var maxPoint: TickDoubleType?
+    var minPoint: TickDoubleType?
 
     var chartScrollView = UIScrollView()
     var chartView = UIView()
     
-    var bigArray = [[Tick]]()
+    var bigArray = [[TickDoubleType]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,13 +52,13 @@ class ViewController: UIViewController {
         //init point
         xPosition = 40
         //yPosition = self.chartView.frame.height/2-15
-        yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(bigArray[0][0].c)!-20.8)/(25.4-20.8)))
+        yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(bigArray[0][0].c)-20.8)/(25.4-20.8)))
         var time = 8
         
         for ary in bigArray{
             
             let origin = CGPoint(x: xPosition, y: yPosition)
-            var linePath = UIBezierPath()
+            let linePath = UIBezierPath()
             let lineShapeLayer = CAShapeLayer()
             
             linePath.move(to: origin)
@@ -66,60 +66,42 @@ class ViewController: UIViewController {
             
             for i in ary{
                 
-                if Double(i.c)! > Double(self.trend!.root.c)! {
+                if i.c > self.trend!.root.c {
                     currentColor = UIColor.red
-                    yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.h)!-20.8)/(25.4-20.8)))
+                    yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.h)-20.8)/(25.4-20.8)))
                 }
-                else if Double(i.c)! < Double(self.trend!.root.c)! {
+                else if Double(i.c) < Double(self.trend!.root.c) {
                     currentColor = UIColor.green
-                    yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.l)!-20.8)/(25.4-20.8)))
+                    yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.l)-20.8)/(25.4-20.8)))
                 }
                 else{
-                    yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.c)!-20.8)/(25.4-20.8)))
+                    yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.c)-20.8)/(25.4-20.8)))
                 }
                 
-                xPosition = CGFloat(Double(i.t)!)*2+40
+                xPosition = CGFloat(i.t)*2+40
                 updateChart(linePath, lineShapeLayer)
                 
-                
-                if i.t != nil {
-                    if Int(Double(i.t)!) % 60 == 0 {
-                        time += 1
-                        print(time)
-                        drawXScaleLabel(x: Double(xPosition), y:  Double(self.chartView.frame.height) - 40, value: time)
+                if Int(i.t) % 60 == 0 {
+                    time += 1
+                    drawXScaleLabel(x: Double(xPosition), y:  Double(self.chartView.frame.height) - 40, value: time)
                     }
-                } else {
-                    print(i.t)
-                }
+              
                 
-                let maxXposition = Double(self.maxPoint!.t)!*2+40
-                let maxYposition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(self.maxPoint!.c)!-20.8)/(25.4-20.8))) - 20
-                let minXposition = Double(self.minPoint!.t)!*2+40
-                let minYposition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(self.minPoint!.c)!-20.8)/(25.4-20.8))) + 20
+                let maxXposition = Double(self.maxPoint!.t)*2+40
+                let maxYposition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(self.maxPoint!.c)-20.8)/(25.4-20.8))) - 20
+                let minXposition = Double(self.minPoint!.t)*2+40
+                let minYposition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(self.minPoint!.c)-20.8)/(25.4-20.8))) + 20
             
-                drawValueLabel(x: maxXposition, y: Double(maxYposition), value: Double(self.maxPoint!.h)!)
-                drawValueLabel(x: minXposition, y: Double(minYposition), value: Double(self.minPoint!.l)!)
+                drawValueLabel(x: maxXposition, y: Double(maxYposition), value: Double(self.maxPoint!.h))
+                drawValueLabel(x: minXposition, y: Double(minYposition), value: Double(self.minPoint!.l))
                 
             }
         }
         
-//        for i in trend.root.tick {
-//            xPosition = CGFloat(Double(i.t)!)+40
-//
-//            yPosition = self.chartView.frame.height-(self.chartView.frame.height * CGFloat((Double(i.c)!-20.8)/(25.4-20.8)))
-//
-//            updateChart()
-//        }
-        
-//        let viewHeight = Int(chartView.frame.height)
-        
         drawYScaleLabel(x: 0, y: Double(self.chartView.frame.height/2) - 20, value: self.centerPoint!)
         drawYScaleLabel(x: 0, y: 0, value: self.topPoint!)
         drawYScaleLabel(x: 0, y: Double(self.chartView.frame.height) - 40, value: self.bottomPoint!)
-        
-        
-        //linePath.addLine(to: CGPoint(x: 311, y: self.chartView.frame.height/2-15))
-        //lineShapeLayer.path = linePath.cgPath
+       
     }
     
     override func didReceiveMemoryWarning() {
@@ -162,17 +144,18 @@ class ViewController: UIViewController {
     func updateChart(_ linePath: UIBezierPath, _ lineShapeLayer: CAShapeLayer) {
         
         updateChartViewFrame()
+        
         linePath.addLine(to: CGPoint(x: xPosition, y: yPosition))
         lineShapeLayer.path = linePath.cgPath
-        //lineShapeLayer.fillColor = UIColor.clear.cgColor
         lineShapeLayer.fillColor = currentColor.cgColor
         lineShapeLayer.strokeColor = currentColor.cgColor
         lineShapeLayer.lineWidth = 1
-        //print(linePath)
+       
         chartView.layer.addSublayer(lineShapeLayer)
     }
     
     func markPoint() {
+        
         let circlePoint = UIView()
         circlePoint.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
         circlePoint.layer.cornerRadius = circlePoint.frame.height / 2
@@ -198,6 +181,7 @@ class ViewController: UIViewController {
     }
     
     func updateChartViewFrame() {
+        
         if xPosition >= chartView.frame.maxX {
             chartView.frame = CGRect(x: 0, y: 0, width: xPosition + 50, height: chartView.frame.height)
             chartScrollView.contentSize = chartView.frame.size
@@ -241,52 +225,52 @@ class ViewController: UIViewController {
     func makeArray(){
         
         guard let trend = self.trend else { return }
-        let basicValue = Double(trend.root.c)
+        let basicValue = trend.root.c
         var isUp = false
         var index = 0
-        var maxValue = Double(trend.root.c)
-        var minValue = Double(trend.root.c)
+        var maxValue = trend.root.c
+        var minValue = trend.root.c
         
         for point in trend.root.tick {
             
-            if Double(point.h)! > maxValue! {
-                maxValue = Double(point.h)!
+            if Double(point.h) > maxValue {
+                maxValue = Double(point.h)
                 self.maxPoint = point
             }
             
-            if Double(point.l)! < minValue! {
-                minValue = Double(point.l)!
+            if Double(point.l) < minValue {
+                minValue = Double(point.l)
                 self.minPoint = point
             }
             
-            if point.t == "1"{
-                if Double(point.c)! >= basicValue! {
+            if point.t == 1 {
+                if Double(point.c) >= basicValue {
                     isUp = true
                 }else{
                     isUp = false
                 }
                 
-                var array = [Tick]()
-                let origin = Tick.init(t: "0", o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+                var array = [TickDoubleType]()
+                let origin = TickDoubleType.init(t: 0, o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
                 array.append(origin)
                 array.append(point)
                 bigArray.append(array)
                 
             }else{
                 
-                if Double(point.c)! >= basicValue!{
+                if point.c >= basicValue {
                     
                     if isUp == false{
-                        let array = [Tick]()
+                        let array = [TickDoubleType]()
                         bigArray.append(array)
                         index += 1
                         
                         //add bigAry[index-1]
                         //add bigAry[index]
                         let lastPoint = bigArray[index-1][bigArray[index-1].count-1]
-                        let t = (Double(lastPoint.t)! - Double(point.t)!) / (Double(point.c)! - Double(lastPoint.c)!)
-                            * (Double(lastPoint.c)! - basicValue!) + Double(lastPoint.t)!
-                        let zeroPoint = Tick.init(t: String(t), o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+                        let t = (lastPoint.t - point.t) / (point.c - lastPoint.c)
+                            * (lastPoint.c - basicValue) + lastPoint.t
+                        let zeroPoint = TickDoubleType.init(t: t, o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
                         bigArray[index-1].append(zeroPoint)
                         bigArray[index].append(zeroPoint)
                         
@@ -301,15 +285,15 @@ class ViewController: UIViewController {
                 else {
                     
                     if isUp == true{
-                        let array = [Tick]()
+                        let array = [TickDoubleType]()
                         bigArray.append(array)
                         index += 1
                         
                         
                         let lastPoint = bigArray[index-1][bigArray[index-1].count-1]
-                        let t = (Double(lastPoint.t)! - Double(point.t)!) / (Double(point.c)! - Double(lastPoint.c)!)
-                            * (Double(lastPoint.c)! - basicValue!) + Double(lastPoint.t)!
-                        let zeroPoint = Tick.init(t: String(t), o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+                        let t = (lastPoint.t - point.t) / ( point.c - lastPoint.c)
+                            * (lastPoint.c - basicValue) + lastPoint.t
+                        let zeroPoint = TickDoubleType.init(t: t, o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
                         bigArray[index-1].append(zeroPoint)
                         bigArray[index].append(zeroPoint)
                     }
@@ -324,15 +308,8 @@ class ViewController: UIViewController {
         }
         
         
-        let zeroPoint = Tick.init(t: "\(self.trend!.root.tick.count)", o: "\(basicValue!)", h: "\(basicValue!)", l: "\(basicValue!)", c: "\(basicValue!)", v: "0")
+        let zeroPoint = TickDoubleType.init(t: Double(trend.root.tick.count), o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
         bigArray[bigArray.count-1].append(zeroPoint)
-        
-        for ary in bigArray{
-            print("=============")
-            print(ary)
-        }
-        
-        
     }
     
     
