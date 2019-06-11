@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E3E9E6B22AF83C700430292 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3E9E6A22AF83C700430292 /* BarChartViewController.swift */; };
 		3E4B71D022A90AFC00172535 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4B71CF22A90AFC00172535 /* AppDelegate.swift */; };
 		3E4B71D222A90AFC00172535 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4B71D122A90AFC00172535 /* ViewController.swift */; };
 		3E4B71D522A90AFC00172535 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D322A90AFC00172535 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E3E9E6A22AF83C700430292 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		3E4B71CC22A90AFC00172535 /* Mitake Assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mitake Assignment.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E4B71CF22A90AFC00172535 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E4B71D122A90AFC00172535 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				3ED7FEC722AA103700A2C190 /* TrendModel.swift */,
 				3ED7FEC922AA10DF00A2C190 /* DataManager.swift */,
 				3E7D566822AE57580014DB49 /* ChartViewController.swift */,
+				3E3E9E6A22AF83C700430292 /* BarChartViewController.swift */,
 			);
 			path = "Mitake Assignment";
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				3E4B71D222A90AFC00172535 /* ViewController.swift in Sources */,
 				3E4B71D022A90AFC00172535 /* AppDelegate.swift in Sources */,
 				3E7D566922AE57580014DB49 /* ChartViewController.swift in Sources */,
+				3E3E9E6B22AF83C700430292 /* BarChartViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -157,8 +157,9 @@ class ChartViewController: UIViewController {
 
         linePath.addLine(to: CGPoint(x: xPosition, y: yPosition))
         lineShapeLayer.path = linePath.cgPath
-        lineShapeLayer.fillColor = currentColor.cgColor
+        lineShapeLayer.fillColor = currentColor.withAlphaComponent(0.2).cgColor
         lineShapeLayer.strokeColor = currentColor.cgColor
+        
         lineShapeLayer.lineWidth = 1
         
         chartView.layer.addSublayer(lineShapeLayer)
@@ -212,5 +213,7 @@ extension Double {
         let result = viewHeight - (yValue-bp)*viewHeight/(tp-bp)
         return result
     }
+    
+   
 }
 
