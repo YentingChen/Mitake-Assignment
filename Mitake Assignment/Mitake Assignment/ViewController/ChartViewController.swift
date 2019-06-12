@@ -20,17 +20,25 @@ class ChartViewController: UIViewController {
     let dataManager = DataManager()
 
     fileprivate func getData() {
+        
+       
         dataManager.readJson { (trend) in
             self.trend = trend
             
-            dataManager.findMaxAndMin(trend: trend, hadler: { (max, min) in
+            dataManager.findMaxAndMin(view: chartView, trend: trend, hadler: { (max, min) in
                 self.maxTick = max
                 self.minTick = min
+            }, handler2: { (max, min) in
+                
             })
             
-            dataManager.makeLineArray(trend: trend, handler: { (array) in
+            dataManager.makeLineArray(view: chartView, trend: trend, handler: { (array) in
                 self.lineArray = array
+            }, hadler2: { (pointArray) in
+                
             })
+            
+            
         }
     }
     

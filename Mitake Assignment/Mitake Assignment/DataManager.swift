@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class DataManager {
     
@@ -29,7 +30,7 @@ class DataManager {
         }
     }
     
-    func transferToDoubleType(trend: Trend) -> TrendDoubleType{
+    func transferToDoubleType(trend: Trend) -> TrendDoubleType {
         var tickDoubleArray = [TickDoubleType]()
         
         for i in trend.root.tick {
@@ -47,8 +48,9 @@ class DataManager {
     }
     
     
-    func findMaxAndMin(trend: TrendDoubleType, hadler: (TickDoubleType, TickDoubleType) -> Void) {
-        
+    func findMaxAndMin(view: UIView, trend: TrendDoubleType, hadler: (TickDoubleType, TickDoubleType) -> Void, handler2: (CGPoint, CGPoint) -> Void) {
+        var maxCGPoint: CGPoint?
+        var minCGPoint: CGPoint?
         var maxValue = trend.root.c
         var minValue = trend.root.c
         var maxPoint: TickDoubleType?
@@ -59,19 +61,26 @@ class DataManager {
             if Double(point.h) > maxValue {
                 maxValue = Double(point.h)
                 maxPoint = point
+                maxCGPoint = CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.h, tp: trend.root.tp, bp: trend.root.bp))
             }
             
             if Double(point.l) < minValue {
                 minValue = Double(point.l)
                 minPoint = point
+                minCGPoint = CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.l, tp: trend.root.tp, bp: trend.root.bp))
+                print(minCGPoint)
             }
             
         }
         hadler(maxPoint!, minPoint!)
+        handler2(maxCGPoint!, minCGPoint!)
     }
     
-    func makeLineArray(trend: TrendDoubleType, handler: ([[TickDoubleType]]) -> Void){
+    var cgPointsArray = [[CGPoint]]()
+    
+    func makeLineArray(view: UIView, trend: TrendDoubleType, handler: ([[TickDoubleType]]) -> Void, hadler2: ([[CGPoint]]) -> Void ) {
         var bigArray = [[TickDoubleType]]()
+        var bigPointArray = [[CGPoint]]()
         let basicValue = trend.root.c
         var isUp = false
         var index = 0
@@ -97,11 +106,22 @@ class DataManager {
                     isUp = false
                 }
                 
+                var pointArray = [CGPoint]()
                 var array = [TickDoubleType]()
                 let origin = TickDoubleType.init(t: 0, o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
                 array.append(origin)
+                pointArray.append(CGPoint(x: origin.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: origin.c, tp: trend.root.tp, bp: trend.root.bp)))
                 array.append(point)
+                if point.c > basicValue {
+                    pointArray.append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.h, tp: trend.root.tp, bp: trend.root.bp)))
+                } else if point.c < basicValue {
+                    pointArray.append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.l, tp: trend.root.tp, bp: trend.root.bp)))
+                } else {
+                    pointArray.append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.h, tp: trend.root.tp, bp: trend.root.bp)))
+                }
+                
                 bigArray.append(array)
+                bigPointArray.append(pointArray)
                 
             }else{
                 
@@ -109,7 +129,10 @@ class DataManager {
                     
                     if isUp == false{
                         let array = [TickDoubleType]()
+                        let pointArray = [CGPoint]()
                         bigArray.append(array)
+                        bigPointArray.append(pointArray)
+                        
                         index += 1
                         
                         //add bigAry[index-1]
@@ -120,20 +143,31 @@ class DataManager {
                         let zeroPoint = TickDoubleType.init(t: t, o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
                         bigArray[index-1].append(zeroPoint)
                         bigArray[index].append(zeroPoint)
-                        
+                        bigPointArray[index-1].append(CGPoint(x: zeroPoint.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: zeroPoint.c, tp: trend.root.tp, bp: trend.root.bp)))
+                        bigPointArray[index].append(CGPoint(x: zeroPoint.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: zeroPoint.c, tp: trend.root.tp, bp: trend.root.bp)))
+                    
                     }
                     
                     //add point
                     //...
                     bigArray[index].append(point)
+                    if point.c > basicValue {
+                        bigPointArray[index].append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.h, tp: trend.root.tp, bp: trend.root.bp)))
+                    } else if point.c < basicValue {
+                        bigPointArray[index].append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.l, tp: trend.root.tp, bp: trend.root.bp)))
+                    } else {
+                        bigPointArray[index].append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.c, tp: trend.root.tp, bp: trend.root.bp)))
+                    }
                     
-                    isUp = true;
+                    isUp = true
                 }
                 else {
                     
                     if isUp == true{
                         let array = [TickDoubleType]()
+                        let pointArray = [CGPoint]()
                         bigArray.append(array)
+                        bigPointArray.append(pointArray)
                         index += 1
                         
                         
@@ -143,21 +177,34 @@ class DataManager {
                         let zeroPoint = TickDoubleType.init(t: t, o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
                         bigArray[index-1].append(zeroPoint)
                         bigArray[index].append(zeroPoint)
+                        bigPointArray[index-1].append(CGPoint(x: zeroPoint.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: zeroPoint.c, tp: trend.root.tp, bp: trend.root.bp)))
+                        bigPointArray[index].append(CGPoint(x: zeroPoint.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: zeroPoint.c, tp: trend.root.tp, bp: trend.root.bp)))
                     }
                     
                     //add point
                     //...
                     bigArray[index].append(point)
                     
-                    isUp = false;
+                    if point.c > basicValue {
+                        bigPointArray[index].append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.h, tp: trend.root.tp, bp: trend.root.bp)))
+                    } else if point.c < basicValue {
+                        bigPointArray[index].append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.l, tp: trend.root.tp, bp: trend.root.bp)))
+                    } else {
+                        bigPointArray[index].append(CGPoint(x: point.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: point.c, tp: trend.root.tp, bp: trend.root.bp)))
+                    }
+                    
+                    isUp = false
                 }
             }
         }
         
         let zeroPoint = TickDoubleType.init(t: Double(trend.root.tick[trend.root.tick.count-1].t + 1), o: basicValue, h: basicValue, l: basicValue, c: basicValue, v: 0)
         bigArray[bigArray.count-1].append(zeroPoint)
+        bigPointArray[bigPointArray.count-1].append(CGPoint(x: zeroPoint.t*2, y: Double.convertToChartViewYCoordinate(view: view, yValue: zeroPoint.c, tp: trend.root.tp, bp: trend.root.bp)))
+        
         
         handler(bigArray)
+        hadler2(bigPointArray)
     }
     
 }
