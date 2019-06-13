@@ -13,6 +13,7 @@
 		3E4B71D522A90AFC00172535 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D322A90AFC00172535 /* Main.storyboard */; };
 		3E4B71D722A90AFD00172535 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D622A90AFD00172535 /* Assets.xcassets */; };
 		3E4B71DA22A90AFD00172535 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4B71D822A90AFD00172535 /* LaunchScreen.storyboard */; };
+		3E76732922B2285000DF3A44 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E76732822B2285000DF3A44 /* Double+.swift */; };
 		3EB397C522B0BDF900D4F5A0 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB397C422B0BDF900D4F5A0 /* LineChartView.swift */; };
 		3ED7FEC622AA0EC000A2C190 /* trend_2201.json in Resources */ = {isa = PBXBuildFile; fileRef = 3ED7FEC522AA0EBF00A2C190 /* trend_2201.json */; };
 		3ED7FEC822AA103700A2C190 /* TrendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7FEC722AA103700A2C190 /* TrendModel.swift */; };
@@ -29,6 +30,7 @@
 		3E4B71D622A90AFD00172535 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E4B71D922A90AFD00172535 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E4B71DB22A90AFD00172535 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E76732822B2285000DF3A44 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		3EB397C422B0BDF900D4F5A0 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
 		3ED7FEC522AA0EBF00A2C190 /* trend_2201.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = trend_2201.json; sourceTree = "<group>"; };
 		3ED7FEC722AA103700A2C190 /* TrendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendModel.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				3EB397C122B0B1F600D4F5A0 /* Model */,
 				3EB397C322B0BD8700D4F5A0 /* View */,
 				3EB397C222B0B21A00D4F5A0 /* ViewController */,
+				3E76732822B2285000DF3A44 /* Double+.swift */,
 			);
 			path = "Mitake Assignment";
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				3E4B71D222A90AFC00172535 /* LineChartViewController.swift in Sources */,
 				3EB397C522B0BDF900D4F5A0 /* LineChartView.swift in Sources */,
 				3E4B71D022A90AFC00172535 /* AppDelegate.swift in Sources */,
+				3E76732922B2285000DF3A44 /* Double+.swift in Sources */,
 				3E3E9E6B22AF83C700430292 /* BarChartViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
