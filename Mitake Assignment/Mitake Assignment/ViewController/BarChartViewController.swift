@@ -95,7 +95,7 @@ class BarChartViewController: UIViewController {
         }
         addYScaleLabel(x: 0, y: 85, value: 805, textColor: UIColor.white, backgroundColor: UIColor.clear)
         addYScaleLabel(x: 0, y: 85 + Double((barChart.frame.height-50)/3 * 1), value: 537, textColor: UIColor.white, backgroundColor: UIColor.clear)
-         addYScaleLabel(x: 0, y: 85 + Double((barChart.frame.height-50)/3 * 2), value: 268, textColor: UIColor.white, backgroundColor: UIColor.clear)
+        addYScaleLabel(x: 0, y: 85 + Double((barChart.frame.height-50)/3 * 2), value: 268, textColor: UIColor.white, backgroundColor: UIColor.clear)
     }
     
     func addXScaleLabel(x: Double, y:Double, value: Int){

@@ -21,6 +21,10 @@ class LineChartView: UIView {
     
     var minValue: Double?
     
+    var xLabelValue: [Double]?
+    
+    var yLabelValue: [Double]?
+    
     /// Contains dataLayer and gradientLayer
     private let mainLayer: CALayer = CALayer()
 
@@ -32,6 +36,9 @@ class LineChartView: UIView {
     
     /// Contains horizontal lines
     private let gridLayer: CALayer = CALayer()
+    
+    /// Contains scrollview, xScaleLabel
+    private let baseView = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,10 +58,10 @@ class LineChartView: UIView {
     private func setupView() {
         
         mainLayer.addSublayer(dataLayer)
+        mainLayer.addSublayer(gridLayer)
         scrollView.layer.addSublayer(mainLayer)
-        
-        self.mainLayer.addSublayer(gridLayer)
-        self.addSubview(scrollView)
+        baseView.addSubview(scrollView)
+        self.addSubview(baseView)
         self.backgroundColor = UIColor.black
     }
     
@@ -110,13 +117,18 @@ class LineChartView: UIView {
     
     override func layoutSubviews() {
         
-        scrollView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
+        baseView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width*2, height: self.frame.size.height)
+        scrollView.frame = CGRect(x: 60, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         scrollView.contentSize = CGSize(width: self.frame.size.width*2, height: self.frame.size.height)
         mainLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width*2, height: self.frame.size.height)
+        dataLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width*2, height: self.frame.size.height)
         gridLayer.frame = CGRect(x: 0, y: 0, width: mainLayer.frame.width, height: self.frame.height)
 
         drawChart()
         drawGrid()
+        addMaxAndMinLabel()
+        addYscaleLabel()
+        addXscaleLabel()
     }
     
     func drawGrid() {
@@ -130,7 +142,7 @@ class LineChartView: UIView {
             shape.path = path.cgPath
             shape.strokeColor = UIColor.white.cgColor
             shape.lineWidth = 0.5
-            gridLayer.addSublayer(shape)
+            dataLayer.addSublayer(shape)
             
         }
         
@@ -140,29 +152,57 @@ class LineChartView: UIView {
             shape.path = path.cgPath
             shape.strokeColor = UIColor.white.cgColor
             shape.lineWidth = 0.5
-            gridLayer.addSublayer(shape)
+            dataLayer.addSublayer(shape)
         }
-        
-        let maxLabelPosition = CGPoint(x: maxPoint!.x, y: maxPoint!.y - 30 )
-        let minLabelPosition = CGPoint(x: minPoint!.x - 10 , y: minPoint!.y + 10)
-        addLabel(position: maxLabelPosition, value: "\(maxValue!)", backgroundColor: .clear, foregroundColor: .white)
-        addLabel(position: minLabelPosition, value: "\(minValue!)", backgroundColor: .clear, foregroundColor: .white)
-        
     }
     
-    func addLabel(position: CGPoint, value: String, backgroundColor: UIColor, foregroundColor: UIColor) {
+    func addLabel(position: CGPoint, value: String, backgroundColor: UIColor, foregroundColor: UIColor, parentLayer: CALayer) {
         
         let textLayer = CATextLayer()
-        textLayer.frame = CGRect(origin: position, size: CGSize(width: 45, height: 20 ))
-        textLayer.fontSize = 17
+        textLayer.frame = CGRect(origin: position, size: CGSize(width: 50, height: 30 ))
+        textLayer.fontSize = 20
         textLayer.string = value
         textLayer.backgroundColor = backgroundColor.cgColor
         textLayer.foregroundColor = foregroundColor.cgColor
         textLayer.alignmentMode = CATextLayerAlignmentMode.center
-        gridLayer.addSublayer(textLayer)
+        parentLayer.addSublayer(textLayer)
     }
     
+    func addMaxAndMinLabel() {
+        let maxLabelPosition = CGPoint(x: maxPoint!.x, y: maxPoint!.y - 30 )
+        let minLabelPosition = CGPoint(x: minPoint!.x - 10 , y: minPoint!.y + 10)
+        addLabel(position: maxLabelPosition, value: "\(maxValue!)", backgroundColor: .clear, foregroundColor: .white, parentLayer: dataLayer)
+        addLabel(position: minLabelPosition, value: "\(minValue!)", backgroundColor: .clear, foregroundColor: .white, parentLayer: dataLayer)
+        
+    }
     
+    func addYscaleLabel() {
+        
+        guard let xlabelValue = self.xLabelValue else { return }
+        let topPosition = CGPoint(x: 0, y: 0)
+        let middlePosition = CGPoint(x: 0, y: baseView.frame.height/2 - 10 )
+        let bottomPosition = CGPoint(x: 0, y: baseView.frame.height-30)
+        addLabel(position: topPosition, value: "\(xlabelValue[0])0", backgroundColor: .red, foregroundColor: .white, parentLayer: baseView.layer)
+        addLabel(position: middlePosition, value: "\(xlabelValue[1])0", backgroundColor: .clear, foregroundColor: .white, parentLayer: baseView.layer)
+        addLabel(position: bottomPosition, value: "\(xlabelValue[2])0", backgroundColor: .green, foregroundColor: .black, parentLayer: baseView.layer)
+      
+
+    }
+    
+    func addXscaleLabel() {
+       var time = 8
+        for i in 0...4 {
+            let position = CGPoint(x: CGFloat(i*120)-10, y: dataLayer.frame.height - 25)
+            time += 1
+            var value = ""
+            if time < 10 {
+                value = "0\(time)"
+            } else {
+                value = "\(time)"
+            }
+            addLabel(position: position, value: value, backgroundColor: .clear, foregroundColor: .white, parentLayer: dataLayer)
+        }
+    }
         
 }
         
